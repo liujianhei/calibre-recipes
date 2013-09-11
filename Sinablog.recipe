@@ -9,35 +9,41 @@ from calibre.ebooks.BeautifulSoup import NavigableString
 # issue_page = 'dn198231.aspx' # May
 # issue_page = 'dn201737.aspx' # June
 
-INDEX = 'file:///home/lscm/tmp/twocold.html'
+INDEX = 'file:///home/lscm/tmp/huayi0710.html'
 
-class Cnblogs(BasicNewsRecipe):
-    title = u'Cnblogs'
+class Sinablog(BasicNewsRecipe):
+    title = u'huayi0710'
     no_stylesheets = True
     auto_cleanup = True
-#    auto_cleanup_keep = '//*[@class="FeatureTitle"]'
-#    remove_tags_before = { 'class' : 'post' }
-#    remove_tags_after  = { 'class' : 'post' }
     publication_type = 'blog'
-#    cover_url = cover_prefix + issue_page.replace('.aspx', '.cover_lrg(en-us,MSDN.10).jpg')
+
     
     def parse_index(self):
         soup = self.index_to_soup(INDEX)
         
         self.title = soup.html.head.title.string.strip()
         
-        mainContent = soup.find('div', { 'id' : "myposts" })
+        mainContent = soup.find('div', { 'class' : "articleList" })
 
         articles_dict = {}
         article_list = []
+        print mainContent
+        print "==================="
         
-        for link in mainContent.findAll('a'):
-            href = link['href']
+        for span in mainContent.findAll('span', {'class': "atc_title"}):
+            try:
+                span.a['href']
+                pass
+            except:
+                continue
 
-            if not re.search(r"\d+\.html", href):
+            print span
+            href = span.a['href']
+
+            if not re.search(r"\.html", href):
                 continue
             
-            title = link.string
+            title = span.a.string
 
             a = articles_dict.get(href)
 
@@ -54,10 +60,5 @@ class Cnblogs(BasicNewsRecipe):
 
         print article_list
         print "--------------------"
-                
-#            if link.parent.name == 'p':
-#                a['description'] = self.get_description(link)
-#            elif link.parent.name == 'strong' and len(link.contents) > 1:
-#                a['description'] = self.get_description(link.parent)
-
-        return [('Default', article_list)]
+        
+        return [('Blogs', article_list)]
