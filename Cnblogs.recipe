@@ -2,12 +2,6 @@
 import re
 from calibre.ebooks.BeautifulSoup import NavigableString
 
-#issue_page = 'jj883946.aspx' # January
-# issue_page = 'jj891014.aspx' # February
-# issue_page = 'jj991969.aspx' # March
-# issue_page = 'dn166920.aspx' # April
-# issue_page = 'dn198231.aspx' # May
-# issue_page = 'dn201737.aspx' # June
 
 INDEX = 'file:///home/lscm/tmp/twocold.html'
 
@@ -15,12 +9,8 @@ class Cnblogs(BasicNewsRecipe):
     title = u'Cnblogs'
     no_stylesheets = True
     auto_cleanup = True
-#    auto_cleanup_keep = '//*[@class="FeatureTitle"]'
-#    remove_tags_before = { 'class' : 'post' }
-#    remove_tags_after  = { 'class' : 'post' }
     publication_type = 'blog'
-#    cover_url = cover_prefix + issue_page.replace('.aspx', '.cover_lrg(en-us,MSDN.10).jpg')
-    
+
     def parse_index(self):
         soup = self.index_to_soup(INDEX)
         
@@ -54,10 +44,5 @@ class Cnblogs(BasicNewsRecipe):
 
         print article_list
         print "--------------------"
-                
-#            if link.parent.name == 'p':
-#                a['description'] = self.get_description(link)
-#            elif link.parent.name == 'strong' and len(link.contents) > 1:
-#                a['description'] = self.get_description(link.parent)
 
         return [('Default', article_list)]
